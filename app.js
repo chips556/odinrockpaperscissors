@@ -10,7 +10,9 @@ function computerPlay() {
     }
 }
 
-function round(playerSelection, computerSelection) {
+function round(computerSelection) {
+    let playerSelection = prompt('Pick rock, paper or scissors').toLowerCase()
+    console.log(playerSelection)
     switch (playerSelection) {
         case 'rock':
             switch(computerSelection) {
@@ -39,6 +41,15 @@ function round(playerSelection, computerSelection) {
                 case 'scissors':
                 return 'Tie'
             }
-
+        default:
+            return 'Only rock, paper or scissors!'
     }
 }
+
+function game(rounds) {
+    for (let i = 0; i < rounds; i++) {
+        console.log(round(computerPlay()))
+    }
+}
+
+game(5)
