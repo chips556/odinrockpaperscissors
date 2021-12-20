@@ -1,55 +1,87 @@
 function computerPlay() {
-    let randNum = Math.floor(Math.random() * 3)
+    let randNum = Math.floor(Math.random() * 3);
     switch (randNum) {
         case 0:
-            return 'rock'
+            return 'rock';
         case 1:
-            return 'paper'
+            return 'paper';
         case 2:
-            return 'scissors'
+            return 'scissors';
     }
 }
-
-function round(computerSelection) {
-    let playerSelection = prompt('Pick rock, paper or scissors').toLowerCase()
-    console.log(playerSelection)
+let winCount = 0;
+let computerWin = 0;
+function round(computerSelection, playerSelection) {
+    console.log(playerSelection);
     switch (playerSelection) {
         case 'rock':
-            switch(computerSelection) {
+            switch (computerSelection) {
                 case 'rock':
-                return 'Tie'
+                    return 'Tie';
                 case 'paper':
-                return 'Paper beats Rock, you lose!'
+                    computerWin++;
+                    return 'Paper beats Rock, you lose!';
                 case 'scissors':
-                return 'Rock beats Scissors, you win!'
+                    winCount++;
+                    return 'Rock beats Scissors, you win!';
             }
         case 'paper':
-            switch(computerSelection) {
+            switch (computerSelection) {
                 case 'rock':
-                return 'Paper beats Rock, you win!'
+                    winCount++;
+                    return 'Paper beats Rock, you win!';
                 case 'paper':
-                return 'Tie'
+                    return 'Tie';
                 case 'scissors':
-                return 'Scissors beats papers, you lose!'
+                    computerWin++;
+                    return 'Scissors beats papers, you lose!';
             }
         case 'scissors':
-            switch(computerSelection) {
+            switch (computerSelection) {
                 case 'rock':
-                return 'Rock beats Scissors, you lose!'
+                    computerWin++;
+                    return 'Rock beats Scissors, you lose!';
                 case 'paper':
-                return 'Scissors beats Paper, you win!'
+                    winCount++;
+                    return 'Scissors beats Paper, you win!';
                 case 'scissors':
-                return 'Tie'
+                    return 'Tie';
             }
         default:
-            return 'Only rock, paper or scissors!'
+            return 'Only rock, paper or scissors!';
     }
 }
-
-function game(rounds) {
-    for (let i = 0; i < rounds; i++) {
-        console.log(round(computerPlay()))
+let resultsDiv = document.querySelector(".results");
+let buttons = Array.from(document.querySelectorAll("button"));
+buttons.map((button) => button.addEventListener("click", getButtonClicked));
+function getButtonClicked(event) {
+    // this function is literal spaghetti code lol
+    let results = document.querySelectorAll("p");
+    let h2 = document.createElement("h2");
+    let clicked = (event.target.innerHTML);
+    let result;
+    if (results.length <= 4) {
+        result = round(computerPlay(), clicked.toLowerCase());
+        // shows results of current game played
+        let p = document.createElement("p");
+        p.textContent = result;
+        // h2 to keep track of win/games
+        h2.textContent = `${winCount}/${results.length + 1}`;
+        resultsDiv.append(p);
+        resultsDiv.append(h2);
+    }
+    if (results.length == 5) {
+        let buttonsDiv = document.querySelector(".buttons");
+        while (buttonsDiv.firstChild) {
+            buttonsDiv.removeChild(buttonsDiv.lastChild);
+        }
+        if (winCount > computerWin) {
+            h2.textContent = `You won ${winCount} times, computer won ${computerWin} times, you win!`;
+        }
+        else {
+            h2.textContent = `You won ${winCount} times, computer won ${computerWin} times, you lose :(`;
+        }
+        resultsDiv.prepend(h2);
     }
 }
-
-game(5)
+//# sourceMappingURL=app.js.map
